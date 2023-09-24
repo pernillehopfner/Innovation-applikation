@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
-import { CARS } from '../const';
+import { CARS } from './const';
 
 // const CarItem = ({ item }) => {
 //   return (

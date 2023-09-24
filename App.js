@@ -14,7 +14,7 @@ import LoginForm from './components/Auth/LoginForm';
 import SignUpForm from './components/Auth/SignUpForm';
 import BarbersScreen from './components/Barbers/index';
 
-import FetchListComponent from './components/List/FetchListComponent';
+import ListComponent from './components/List/index.js';
 
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -149,7 +149,7 @@ export default function App() {
           <Tab.Screen name="Profile" children={()=><ProfileScreen/>} />
           <Tab.Screen name="Settings" children={()=><SettingsScreen prop={settingsScreenText}/>} />
           <Tab.Screen name="Home" children={()=><HomeScreen prop={homeScreenText}/>} />
-          <Tab.Screen name="List" children={()=><FetchListComponent/>} />
+          <Tab.Screen name="List" children={()=><ListComponent/>} />
           <Tab.Screen name="Frisører" children={()=><BarbersScreen/>} />
           <Tab.Screen name="Stack" component={StackNavigator} />
         </Tab.Navigator>
