@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { StatusBar } from 'expo-status-bar';
+// import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 
 //Importere Firebase Services
@@ -14,7 +14,7 @@ import LoginForm from './components/Auth/LoginForm';
 import SignUpForm from './components/Auth/SignUpForm';
 import BarbersScreen from './components/Barbers/index';
 
-import ListComponent from './components/List/index.js';
+// import ListComponent from './components/List/index.js';
 
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -108,7 +108,7 @@ export default function App() {
     return  (
       <NavigationContainer>
         <Tab.Navigator screenOptions={({ route }) => ({
-          tabBarActiveTintColor: "blue",
+          tabBarActiveTintColor: "pink",
           tabBarInactiveTintColor: "gray",
           tabBarStyle: [
         {
@@ -117,7 +117,7 @@ export default function App() {
           null
           ],
           tabBarIcon: ({ color, size }) => {
-            if (route.name === 'Home') {
+            if (route.name === 'Hjem') {
               return (
                   <Ionicons
                       name={'home-outline'}
@@ -125,7 +125,7 @@ export default function App() {
                       color={color}
                   />
               );
-            } else if (route.name === 'Settings') {
+            } else if (route.name === 'Min profil') {
               return (
                   <Ionicons
                       name='md-settings-outline'
@@ -133,8 +133,7 @@ export default function App() {
                       color={color}
                   />
               );
-            }
-            else{
+            } else{
               return (
                   <Ionicons
                       name='md-list-outline'
@@ -146,12 +145,12 @@ export default function App() {
           },
         })}
         >
-          <Tab.Screen name="Profile" children={()=><ProfileScreen/>} />
-          <Tab.Screen name="Settings" children={()=><SettingsScreen prop={settingsScreenText}/>} />
-          <Tab.Screen name="Home" children={()=><HomeScreen prop={homeScreenText}/>} />
-          <Tab.Screen name="List" children={()=><ListComponent/>} />
-          <Tab.Screen name="Frisører" children={()=><BarbersScreen/>} />
-          <Tab.Screen name="Stack" component={StackNavigator} />
+         <Tab.Screen name="Hjem" children={()=><HomeScreen prop={homeScreenText}/>} />
+         <Tab.Screen name="Ledige tider" children={()=><BarbersScreen/>} />
+          <Tab.Screen name="Mine tider" children={()=><ProfileScreen/>} />
+          <Tab.Screen name="Min profil" children={()=><SettingsScreen prop={settingsScreenText}/>} />
+          
+          
         </Tab.Navigator>
       </NavigationContainer>
   )

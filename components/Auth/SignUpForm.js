@@ -1,93 +1,88 @@
-import React, {useState} from 'react';
-import {Button,Text,
-    View,
-    TextInput,
-    ActivityIndicator,
-    StyleSheet,
+import React, { useState } from 'react';
+import {
+  Button,
+  Text,
+  View,
+  TextInput,
+  StyleSheet,
 } from 'react-native';
-//import firebase from 'firebase';
-import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 
 function SignUpForm() {
-    //Instantiering af state-variabler, der skal benyttes i SignUpForm
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [isCompleted, setCompleted] = useState(false)
-    const [errorMessage, setErrorMessage] = useState(null)
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState(null);
 
-    
-    const auth = getAuth()
-    //Her defineres brugeroprettelsesknappen, som aktiverer handleSubmit igennem onPress
-    const renderButton = () => {
-        return <Button onPress={() => handleSubmit()} title="Create user" />;
-    };
+  const auth = getAuth();
 
+  const handleSubmit = async () => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      // Håndter vellykket oprettelse her...
+    } catch (error) {
+      const errorMessage = error.message;
+      setErrorMessage(errorMessage);
+      // Håndter fejl under oprettelsesforsøg her...
+    }
+  };
 
-    /*
-   * Metoden herunder håndterer oprettelse af brugere ved at anvende den prædefinerede metode, som stilles til rådighed af firebase
-   * createUserWithEmailAndPassword tager en mail og et password med som argumenter og foretager et asynkront kald, der eksekverer en brugeroprettelse i firebase https://firebase.google.com/docs/auth/web/password-auth#create_a_password-based_account
-   * Opstår der fejl under forsøget på oprettelse, vil der i catch blive fremsat en fejlbesked, som, ved brug af
-   * setErrorMessage, angiver værdien for state-variablen, errormessage
-   */
-      const handleSubmit = async() => {
-        await createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          // Signed in 
-          const user = userCredential.user;
-          // ...
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          setErrorMessage(errorMessage)
-          // ..
-        });
-      }
-
-//I return oprettes en tekstkomponent, der angiver at dette er SignUpfrom
-//Dernæst er der to inputfelter, som løbeende sætter værdien af state-variablerne, mail og password.
-// Afslutningsvis, angives det at, hvis errorMessage får fastsat en værdi, skal denne udskrives i en tekstkomponent.
-
-    return (
-        <View>
-            <Text style={styles.header}>Sign up</Text>
-            <TextInput
-                placeholder="email"
-                value={email}
-                onChangeText={(email) => setEmail(email)}
-                style={styles.inputField}
-            />
-            <TextInput
-                placeholder="password"
-                value={password}
-                onChangeText={(password) => setPassword(password)}
-                secureTextEntry
-                style={styles.inputField}
-            />
-            {errorMessage && (
-                <Text style={styles.error}>Error: {errorMessage}</Text>
-            )}
-            {renderButton()}
-        </View>
-    );
+  return (
+    <View style={styles.container}>
+      <Text style={styles.header}>Ny bruger? Opret dig her👇</Text>
+      <TextInput
+        placeholder="email"
+        value={email}
+        onChangeText={(email) => setEmail(email)}
+        style={styles.inputField}
+      />
+      <TextInput
+        placeholder="password"
+        value={password}
+        onChangeText={(password) => setPassword(password)}
+        secureTextEntry
+        style={styles.inputField}
+      />
+      {errorMessage && (
+        <Text style={styles.error}>Fejl: {errorMessage}</Text>
+      )}
+      <View style={styles.buttonContainer}>
+        <Button onPress={() => handleSubmit()} title="Opret bruger" color="black" />
+      </View>
+    </View>
+  );
 }
 
-//Lokal styling til brug i SignUpForm
 const styles = StyleSheet.create({
-    error: {
-        color: 'red',
-    },
-    inputField: {
-        borderWidth: 1,
-        margin: 10,
-        padding: 10,
-        width: 300
-    },
-    header: {
-        fontSize: 40,
-    },
+  container: {
+    backgroundColor: '#E1F5FF',
+    padding: 20,
+  },
+  header: {
+    fontSize: 30,
+    color: '#FFCBF1',
+    textAlign: 'center',
+  },
+  inputField: {
+    borderWidth: 1,
+    margin: 10,
+    padding: 10,
+    width: 300,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 5,
+  },
+  error: {
+    color: 'pink',
+  },
+  buttonContainer: {
+    marginTop: 10,
+    backgroundColor: '#FFCBF1',
+    borderRadius: 5,
+    padding: 10,
+    width: 300,
+    alignSelf: 'center', // Centrer knappen i midten
+  },
 });
 
-//Eksport af Loginform, således denne kan importeres og benyttes i andre komponenter
-export default SignUpForm
+export default SignUpForm;
