@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
 
 function ProfileScreen() {
+  // State variabler til at holde styr på fremtidige og tidligere aftaler
   const [futureAppointments, setFutureAppointments] = useState([
+    // Fremtidige aftaler
     {
       datetime: '21/10 kl 12:00',
       clinic: 'Salon A',
@@ -18,6 +20,7 @@ function ProfileScreen() {
   ]);
 
   const [pastAppointments, setPastAppointments] = useState([
+    // Tidligere aftaler
     {
       datetime: '15/10 kl 10:00',
       clinic: 'Salon C',
@@ -26,8 +29,8 @@ function ProfileScreen() {
     },
   ]);
 
+  // Funktion til at beregne det samlede beløb, som kunden har sparet på tidligere og kommende behandlinger 
   const calculateTotalSavings = () => {
-    // Beregn det samlede beløb, der er sparet på behandlinger
     const allAppointments = [...futureAppointments, ...pastAppointments];
 
     let totalSavings = 0;
@@ -43,8 +46,10 @@ function ProfileScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      {/* Overskrift for sektion med kommende tider */}
       <View style={styles.section}>
         <Text style={styles.header}>Kommende tider:</Text>
+        {/* Liste over fremtidige aftaler */}
         {futureAppointments.map((appointment, index) => (
           <View key={index} style={styles.appointmentItem}>
             <Text style={styles.appointmentHeader}>
@@ -70,8 +75,12 @@ function ProfileScreen() {
           </View>
         ))}
       </View>
+
+      {/* Overskrift for sektion med tidligere tider */}
       <View style={styles.section}>
         <Text style={styles.header}>Tidligere bookede tider:</Text>
+
+        {/* Liste over tidligere aftaler */}
         {pastAppointments.map((appointment, index) => (
           <View key={index} style={styles.appointmentItem}>
             <Text style={styles.appointmentHeader}>
@@ -89,6 +98,7 @@ function ProfileScreen() {
             <TouchableOpacity
               style={styles.detailsButton}
               onPress={() => {
+
                 // Handling for "Se detaljer" knappen
               }}
             >
@@ -97,6 +107,8 @@ function ProfileScreen() {
           </View>
         ))}
       </View>
+
+      {/* Sektion til at vise det samlede beløb, der er sparet */}
       <View style={styles.savingsSection}>
         <Text style={styles.savingsHeader}>Sparet beløb på behandlinger:</Text>
         <Text style={styles.totalSavings}>{calculateTotalSavings()} kr</Text>
@@ -121,26 +133,23 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#FFCBF1', // Lyserød overskrift
     marginBottom: 8,
-    // fontFamily: 'IBMPlexMono-Bold', // Brug IBM Plex Mono som teksttype
   },
   appointmentItem: {
     backgroundColor: 'white', // Hvid boks omkring tiden
     borderRadius: 5,
     padding: 16,
-    marginBottom: 16, // Øget margin for at adskille tider
+    marginBottom: 16, 
   },
   appointmentHeader: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#1A1A1A', // Sort farve for tekst i boksen
+    color: '#1A1A1A', 
     marginBottom: 8,
-    // fontFamily: 'IBMPlexMono-Regular', // Brug IBM Plex Mono som teksttype
   },
   appointmentText: {
     fontSize: 16,
-    color: 'black', // Sort farve for tekst i boksen
+    color: 'black', 
     marginBottom: 8,
-    // fontFamily: 'IBMPlexMono-Regular', // Brug IBM Plex Mono som teksttype
   },
   detailsButton: {
     backgroundColor: '#FFCBF1', // Lyserød boks omkring knappen
@@ -149,7 +158,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center', // Placer knappen til venstre i boksen
   },
   detailsButtonText: {
-    color: 'black', // Sort tekstfarve for knappen
+    color: 'black', 
   },
   savingsSection: {
     marginTop: 32,
@@ -160,11 +169,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#FFCBF1', // Lyserød overskrift
     marginBottom: 16,
-    // fontFamily: 'IBMPlexMono-Bold', // Brug IBM Plex Mono som teksttype
   },
   totalSavings: {
     fontSize: 24,
-    color: 'green', // Tekstfarve for sparebeløb (grøn)
-    // fontFamily: 'IBMPlexMono-Bold', // Brug IBM Plex Mono som teksttype
+    color: 'green', // Tekstfarve for sparetbeløb
   },
 });
+

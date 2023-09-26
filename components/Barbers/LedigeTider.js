@@ -5,6 +5,7 @@ function HomeScreen({ navigation }) {
   const [selectedRegion, setSelectedRegion] = useState(null);
   const [selectedTreatment, setSelectedTreatment] = useState(null);
 
+  // Tilgængelige frisørtider
   const availableAppointments = [
     {
       salonName: 'Salon A',
@@ -78,102 +79,113 @@ function HomeScreen({ navigation }) {
     },
   ];
 
+  // Tilgængelige regioner og behandlingstyper
   const regions = [
     'København',
     'Jylland',
     'Fyn',
   ];
 
+  // Typer af behandlinger
   const treatments = [
     'Klip',
     'Vask og føn',
     'Farvning',
   ];
+  
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      {/* Velkomsttekst */}
       <Text style={styles.header}>Velkommen til Trimster!</Text>
       <Text style={styles.subHeader}>Vælg mellem alle de dygtige frisører</Text>
+  
+      {/* Knapper til at vælge region */}
       <View style={styles.buttonContainer}>
-        {regions.map((region) => (
-          <TouchableOpacity
-            key={region}
-            style={[
-              styles.regionButton,
-              selectedRegion === region && styles.selectedRegionButton,
-            ]}
-            onPress={() => setSelectedRegion(region)}
-          >
-            <Text
-              style={[
-                styles.buttonText,
-                selectedRegion === region && styles.selectedButtonText,
-              ]}
-            >
-              Frisører i {region}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-      <View style={styles.filterBox}>
-        <Text style={styles.filterHeader}>Ledige tider:</Text>
-        <View style={styles.filterButtons}>
-          {treatments.map((treatment) => (
+        {regions.map((region) => {
+          return (
             <TouchableOpacity
-              key={treatment}
+              key={region}
               style={[
-                styles.treatmentButton,
-                selectedTreatment === treatment && styles.selectedTreatmentButton,
+                styles.regionButton,
+                selectedRegion === region && styles.selectedRegionButton,
               ]}
-              onPress={() => setSelectedTreatment(treatment)}
+              onPress={() => setSelectedRegion(region)}
             >
               <Text
                 style={[
-                  styles.treatmentButtonText,
-                  selectedTreatment === treatment && styles.selectedTreatmentButtonText,
+                  styles.buttonText,
+                  selectedRegion === region && styles.selectedButtonText,
                 ]}
               >
-                {treatment}
+                Frisører i {region}
               </Text>
             </TouchableOpacity>
-          ))}
+          );
+        })}
+      </View>
+  
+      {/* Filter for behandlingstyper */}
+      <View style={styles.filterBox}>
+        <Text style={styles.filterHeader}>Ledige tider:</Text>
+        <View style={styles.filterButtons}>
+          {treatments.map((treatment) => {
+            return (
+              <TouchableOpacity
+                key={treatment}
+                style={[
+                  styles.treatmentButton,
+                  selectedTreatment === treatment && styles.selectedTreatmentButton,
+                ]}
+                onPress={() => setSelectedTreatment(treatment)}
+              >
+                <Text
+                  style={[
+                    styles.treatmentButtonText,
+                    selectedTreatment === treatment && styles.selectedTreatmentButtonText,
+                  ]}
+                >
+                  {treatment}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
         </View>
+  
+        {/* Liste over tilgængelige tider baseret på valgte region og behandlingstype */}
+       
         {availableAppointments
           .filter(
             (appointment) =>
               (!selectedRegion || appointment.region === selectedRegion) &&
               (!selectedTreatment || appointment.treatmentType === selectedTreatment)
           )
-          .map((appointment, index) => (
-            <View key={index} style={styles.appointmentItem}>
-              <View style={styles.salonBox}>
-                <Text style={styles.salonText}>{appointment.salonName}</Text>
-                <Text style={styles.appointmentText}>
-                  Du kan få "{appointment.appointmentType}" hos os
-                </Text>
-                <Text style={styles.dateTimeText}>
-                  {`Dato: ${appointment.date}, Tid: ${appointment.time}`}
-                </Text>
-                <Text style={styles.originalPrice}>Før: {appointment.originalPrice} kr</Text>
-                <View style={styles.discountedPriceBox}>
-                  <Text style={styles.discountedPriceLabel}>Nu:</Text>
-                  <Text style={styles.discountedPrice}>{appointment.discountedPrice} kr</Text>
+          .map((appointment, index) => {
+            return (
+              <View key={index} style={styles.appointmentItem}>
+                <View style={styles.salonBox}>
+                  <Text style={styles.salonText}>{appointment.salonName}</Text>
+                  <Text style={styles.appointmentText}>
+                    Du kan få "{appointment.appointmentType}" hos os
+                  </Text>
+                  <Text style={styles.dateTimeText}>
+                    {`Dato: ${appointment.date}, Tid: ${appointment.time}`}
+                  </Text>
+                  <Text style={styles.originalPrice}>Før: {appointment.originalPrice} kr</Text>
+                  <View style={styles.discountedPriceBox}>
+                    <Text style={styles.discountedPriceLabel}>Nu:</Text>
+                    <Text style={styles.discountedPrice}>{appointment.discountedPrice} kr</Text>
+                  </View>
+                  <TouchableOpacity style={styles.bookButton}>
+                    <Text style={styles.bookButtonText}>Book tid</Text>
+                  </TouchableOpacity>
                 </View>
-                <TouchableOpacity style={styles.bookButton}>
-                  <Text style={styles.bookButtonText}>Book tid</Text>
-                </TouchableOpacity>
               </View>
-            </View>
-          ))}
+            );
+          })}
       </View>
-      <Button
-        title="Gå til Profil"
-        onPress={() => {
-          navigation.navigate('Profile');
-        }}
-      />
     </ScrollView>
-  );
+  );  
 }
 
 export default HomeScreen;
@@ -188,13 +200,13 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: '#FFCBF1', // Lyserød overskrift
     marginBottom: 8,
-    fontFamily: 'IBMPlexMono-Bold',
+    // fontFamily: 'IBMPlexMono-Bold',
   },
   subHeader: {
     fontSize: 18,
     color: '#1A1A1A', // Sort tekstfarve
     marginBottom: 16,
-    fontFamily: 'IBMPlexMono-Regular',
+    // fontFamily: 'IBMPlexMono-Regular',
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -229,7 +241,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#FFCBF1', // Lyserød overskrift
     marginBottom: 8,
-    fontFamily: 'IBMPlexMono-Bold',
+    // fontFamily: 'IBMPlexMono-Bold',
   },
   filterButtons: {
     flexDirection: 'row',
@@ -271,7 +283,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: 'bold',
     marginBottom: 8,
-    fontFamily: 'IBMPlexMono-Bold',
+    // fontFamily: 'IBMPlexMono-Bold',
   },
   appointmentText: {
     fontSize: 16,
@@ -283,7 +295,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#1A1A1A',
     marginBottom: 8,
-    fontFamily: 'IBMPlexMono-Regular',
+    // fontFamily: 'IBMPlexMono-Regular',
   },
   originalPrice: {
     fontSize: 14,
@@ -316,7 +328,6 @@ const styles = StyleSheet.create({
   bookButtonText: {
     fontSize: 16,
     color: 'black',
-    fontFamily: 'IBMPlexMono-Bold',
+    // fontFamily: 'IBMPlexMono-Bold',
   },
 });
-

@@ -9,18 +9,18 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { Card } from 'react-native-paper';
 
 //Importere vores componenter fra components mappe
-import ProfileScreen from './components/ProfileScreen';
+import ProfileScreen from './components/MineTider';
 import LoginForm from './components/Auth/LoginForm';
 import SignUpForm from './components/Auth/SignUpForm';
-import BarbersScreen from './components/Barbers/index';
+import BarbersScreen from './components/Barbers/LedigeTider';
 
 // import ListComponent from './components/List/index.js';
 
 
 import { NavigationContainer } from '@react-navigation/native';
 
-import HomeScreen from "./components/HomeScreen";
-import SettingsScreen from "./components/SettingsScreen";
+import HomeScreen from "./components/Hjem";
+import SettingsScreen from "./components/MinProfil";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import StackNavigator from "./components/StackNavigator";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
