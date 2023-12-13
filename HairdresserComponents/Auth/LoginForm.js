@@ -7,9 +7,9 @@ import {
   StyleSheet,
 } from 'react-native';
 
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 
-function SignUpForm() {
+function AuthForm({ isSignUp }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
@@ -18,19 +18,22 @@ function SignUpForm() {
 
   const handleSubmit = async () => {
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-      // Håndter vellykket oprettelse her...
+      if (isSignUp) {
+        await createUserWithEmailAndPassword(auth, email, password);
+      } else {
+        await signInWithEmailAndPassword(auth, email, password);
+      }
+      // Håndter vellykket login/oprettelse her...
     } catch (error) {
       const errorMessage = error.message;
       setErrorMessage(errorMessage);
-      // Håndter fejl under oprettelsesforsøg her...
+      // Håndter fejl her...
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Ny bruger? Opret dig her👇</Text>
+      <Text style={styles.header}>{isSignUp ? 'Ny bruger? Opret dig her👇' : 'Allerede bruger? Login her👇'}</Text>
       <TextInput
         placeholder="email"
         value={email}
@@ -48,7 +51,7 @@ function SignUpForm() {
         <Text style={styles.error}>Fejl: {errorMessage}</Text>
       )}
       <View style={styles.buttonContainer}>
-        <Button onPress={() => handleSubmit()} title="Opret bruger" color="black" />
+        <Button onPress={() => handleSubmit()} title={isSignUp ? 'Opret bruger' : 'Login'} color="black" />
       </View>
     </View>
   );
@@ -85,4 +88,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignUpForm;
+export default AuthForm;
