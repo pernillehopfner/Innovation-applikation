@@ -12,6 +12,7 @@ import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 
 function SignUpForm() {
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -36,6 +37,12 @@ function SignUpForm() {
         placeholder="email"
         value={email}
         onChangeText={(email) => setEmail(email)}
+        style={styles.inputField}
+      />
+      <TextInput
+        placeholder="phone"
+        value={phone}
+        onChangeText={(phone) => setPhone(phone)}
         style={styles.inputField}
       />
       <TextInput

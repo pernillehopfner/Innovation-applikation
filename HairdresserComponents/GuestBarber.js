@@ -1,18 +1,19 @@
 import React from 'react';
-import { View, StyleSheet  } from 'react-native';
-import SignUpForm from "./Auth/SignUpForm"
-import LoginForm from "./Auth/LoginForm"
+import { View, StyleSheet, Text  } from 'react-native';
+import SignUpForm from "./hairdresserAuth/hdSignUpForm"
+import LoginForm from "./hairdresserAuth/hdLoginForm"
 
-function GuestPage({ navigation }) {
+function GuestPageBarber({ navigation }) {
   return (
     <View style={styles.container}>      
+    <Text>Frisør</Text>
     <SignUpForm />
     <LoginForm />
 </View>
   );
 }
 
-export default GuestPage;
+export default GuestPageBarber;
 
 
 const styles = StyleSheet.create({

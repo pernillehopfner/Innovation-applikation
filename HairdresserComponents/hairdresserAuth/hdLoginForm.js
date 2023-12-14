@@ -33,7 +33,7 @@ function AuthForm({ isSignUp }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>{isSignUp ? 'Ny bruger? Opret dig her👇' : 'Allerede bruger? Login her👇'}</Text>
+      <Text style={styles.header}>{isSignUp ? 'Ny bruger? Opret dig her hallo👇' : 'Allerede bruger? Login her👇'}</Text>
       <TextInput
         placeholder="email"
         value={email}
