@@ -11,17 +11,18 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, ref, set, onValue, push } from "firebase/database";
 
 // Import your components
-
+//Frisør komponents 
 import HomeScreen from './HairdresserComponents/Home';
-import ProfileScreen from './HairdresserComponents/MySloths';
-
+import MySloth from './HairdresserComponents/MySloths';
+import ProfileScreen from './HairdresserComponents/MyProfile';
 import GuestPageBarber from './HairdresserComponents/GuestBarber';
+
+
+
+//Kunde komppnents
 import GuestPage from './CustomerComponents/GuestCustomer';
 import MySlots from './CustomerComponents/MySlots';
-
-import BarbersScreen from './HairdresserComponents/AvailableSlots/AvailableSlots';
-import SettingsScreen from './HairdresserComponents/MyProfile';
-
+import BookSloth from './CustomerComponents/BookSloth';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -107,7 +108,7 @@ export default function App() {
     );
   }
 
-  //frisørnavigation og views
+//------------------Frisørnavigation og views---------------------------//
 
   const BarberNavigation = () => {
     return (
@@ -151,16 +152,16 @@ export default function App() {
             },
           })}
         >
+
           <Tab.Screen name="Hjem" children={() => <HomeScreen  />} />
-          <Tab.Screen name="Ledige tider" children={() => <BarbersScreen />} />
-          <Tab.Screen name="Mine tider" children={() => <ProfileScreen />} />
-          <Tab.Screen name="Min profil" children={() => <SettingsScreen  />} />
+          <Tab.Screen name="Mine tider" children={() => <MySloth />} />
+          <Tab.Screen name="Min profil" children={() => <ProfileScreen  />} />
         </Tab.Navigator>
       </NavigationContainer>
     );
   }
 
-  //Kundenavigation og views
+//------------------Kundenavigation og views---------------------------//
 
   const CustomerNavigation = () => {
     return (
@@ -204,8 +205,9 @@ export default function App() {
             },
           })}
         >
-          <Tab.Screen name="MySlots" children={() => <MySlots  />} />
-          
+          <Tab.Screen name="Mine tider" children={() => <MySlots  />} />
+          <Tab.Screen name="Book tid" children={() => <BookSloth  />} />
+
         </Tab.Navigator>
       </NavigationContainer>
     );
