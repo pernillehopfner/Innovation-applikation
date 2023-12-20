@@ -25,7 +25,6 @@ function MySloth() {
         return item[keys[1]];
     });
     
-
       
       setBookings(transformedArray);
     }, (error) => {
@@ -48,6 +47,8 @@ function MySloth() {
           <Text style={styles.text}>Før-pris: {booking.originalPrice}</Text>
           <Text style={styles.text}>Ny pris: {booking.discountedPrice}</Text>
           <Text style={styles.text}>Behandler: {booking.handler}</Text>
+          <Text style={styles.text}>Telefonnummer: {booking.phoneNumber}</Text>
+
         </View>
       ))}
     </ScrollView>
