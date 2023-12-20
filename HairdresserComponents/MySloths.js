@@ -10,7 +10,6 @@ function MySloth() {
     const appointmentsRef = ref(db, 'appointments');
     
     const unsubscribe = onValue(appointmentsRef, (snapshot) => {
-      
       const data = snapshot.val();
           
       const bookingsArray = data ? Object.keys(data).map((key) => ({
@@ -18,13 +17,14 @@ function MySloth() {
         ...data[key]
       })) : [];
 
+      // Denne transformation antager, at hvert booking objekt har præcis et nøgleværdi-par udover id
       let transformedArray = bookingsArray.map(item => {
-        const keys = Object.keys(item)
-  
-        
-        return item[keys[1]];
-    });
-    
+        const keys = Object.keys(item).filter(key => key !== 'id');
+        return {
+          id: item.id,
+          ...item[keys[0]]
+        };
+      });
       
       setBookings(transformedArray);
     }, (error) => {
@@ -32,12 +32,24 @@ function MySloth() {
       console.error("Error fetching data:", error);
     });
 
+    // Rens op ved at afmelde lytteren, når komponenten unmounts
     return () => unsubscribe();
   }, []);
 
-  
+  const handleDelete = (id) => {
+    const bookingRef = ref(db, `appointments/${id}`);
+    remove(bookingRef)
+      .then(() => {
+        Alert.alert("Slettet", "Tiden er nu slettet.");
+        // Opdater staten for at fjerne den slettede booking fra listen
+        setBookings(currentBookings => currentBookings.filter(booking => booking.id !== id));
+      })
+      .catch(error => {
+        Alert.alert("Fejl", "Der opstod en fejl ved sletning af tiden.");
+        console.error("Error removing booking:", error);
+      });
+  };
 
-  console.log(bookings)
   return (
     <ScrollView style={styles.container}>
       {bookings.map((booking) => (
@@ -48,7 +60,10 @@ function MySloth() {
           <Text style={styles.text}>Ny pris: {booking.discountedPrice}</Text>
           <Text style={styles.text}>Behandler: {booking.handler}</Text>
           <Text style={styles.text}>Telefonnummer: {booking.phoneNumber}</Text>
-
+          <Button
+            title="Slet tid"
+            onPress={() => handleDelete(booking.id)}
+          />
         </View>
       ))}
     </ScrollView>
@@ -70,7 +85,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 4,
   },
-  // Tilføj yderligere styles her...
 });
 
 export default MySloth;
+

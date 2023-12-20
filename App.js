@@ -4,19 +4,17 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { View, Text, Button } from 'react-native';
-// Import Firebase Services
+import { View, Text, Button, TouchableOpacity, StyleSheet} from 'react-native';
+// Firebase Services
 import { getApps, initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, ref, set, onValue, push } from "firebase/database";
 
-// Import your components
 //Frisør komponents 
 import HomeScreen from './HairdresserComponents/Home';
 import MySloth from './HairdresserComponents/MySloths';
 import ProfileScreen from './HairdresserComponents/MyProfile';
 import GuestPageBarber from './HairdresserComponents/GuestBarber';
-
 
 
 //Kunde komppnents
@@ -27,7 +25,7 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 
-// Your Firebase configuration
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCmby88onizVXw-q0j05Y2R_TItm-P92mo",
   authDomain: "trimsterapp.firebaseapp.com",
@@ -72,29 +70,56 @@ export default function App() {
     };
   }, []);
 
+
   const Welcome = ({ navigation }) => {
     return (
-      <View style={{width: "100%", height: "100%"}}>
-        <Text>Velkommen til Trimster</Text>
-        <Button
-          title="Jeg er frisør"
+      <View style={styles.container}>
+        <Text style={styles.welcomeText}>Velkommen til Trimster</Text>
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: '#ffc0ff' }]}
           onPress={() => {
-            changeType("barber")
-            navigation.navigate('GuestBarber')
+            changeType("barber");
+            navigation.navigate('GuestBarber');
           }}
-          
-        />
-        <Button
-          title="Jeg er kunde"
+        >
+          <Text style={[styles.buttonText, { color: '#000' }]}>Jeg er frisør</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: '#ffc0ff', marginTop: 10 }]}
           onPress={() => {
-            changeType("customer")
-            navigation.navigate('Guest')
+            changeType("customer");
+            navigation.navigate('Guest');
           }}
-        />
+        >
+          <Text style={[styles.buttonText, { color: '#000' }]}>Jeg er kunde</Text>
+        </TouchableOpacity>
       </View>
     );
   };
-
+  
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    welcomeText: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginBottom: 20,
+    },
+    button: {
+      borderWidth: 2,
+      borderRadius: 5,
+      paddingHorizontal: 20,
+      paddingVertical: 10,
+    },
+    buttonText: {
+      fontSize: 18,
+      fontWeight: 'normal', // Ikke-fed tekst
+    },
+  });
+  
 
   const Frontpage = () => {
     return (
@@ -205,8 +230,9 @@ export default function App() {
             },
           })}
         >
-          <Tab.Screen name="Mine tider" children={() => <MySlots  />} />
           <Tab.Screen name="Book tid" children={() => <BookSloth  />} />
+          <Tab.Screen name="Mine profil" children={() => <MySlots  />} />
+          
 
         </Tab.Navigator>
       </NavigationContainer>

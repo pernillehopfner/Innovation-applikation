@@ -1,62 +1,102 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
-import { getDatabase, ref, onValue } from "firebase/database";
-import { getAuth } from "firebase/auth";
+import React from 'react';
+import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { getAuth, updateProfile, deleteUser, signOut } from "firebase/auth";
 
-function MySlots() {
-  const [mySlots, setMySlots] = useState([]);
+function ProfileScreen() {
   const auth = getAuth();
   const user = auth.currentUser;
 
-  useEffect(() => {
-    if (!user) {
-      // Brugeren er ikke logget ind, eller så er data endnu ikke tilgængelig
-      return;
+  // Funktion til at opdatere brugeroplysninger
+     // Her bruges deri kun en simpel opdatering af brugerens navn som et eksempel.
+
+  const handleUpdateProfile = async () => {
+    try {
+      await updateProfile(auth.currentUser, {
+        displayName: 'Nyt Navn', // Erstat med det ønskede opdaterede navn
+      });
+      console.log('Brugeroplysninger er blevet opdateret');
+    } catch (error) {
+      console.error('Fejl ved opdatering af brugeroplysninger:', error);
     }
+  };
 
-    const db = getDatabase();
-    const mySlotsRef = ref(db, `userBookedTimes/${user.uid}`);
+  // Funktion til at slette kontoen
+  const handleDeleteProfile = async () => {
+    try {
+      await deleteUser(auth.currentUser);
+      console.log('Brugerprofilen er blevet slettet');
+    } catch (error) {
+      console.error('Fejl ved sletning af brugerprofil:', error);
+    }
+  };
 
-    const unsubscribe = onValue(mySlotsRef, (snapshot) => {
-      const data = snapshot.val();
-      const loadedSlots = data ? Object.keys(data).map(key => {
-        return { key, ...data[key] };
-      }) : [];
-      setMySlots(loadedSlots);
-    });
+  // Funktion til at logge ud
+  const handleLogOut = async () => {
+    try {
+      await signOut(auth);
 
-    return () => unsubscribe(); // Husk at afmelde lytteren
-  }, [user]);
+      // Naviger til din log ind skærm efter log ud
+      // Note til mig selv - tilpas til navigation.navigate('Login');
+      console.log('Bruger er logget ud');
+    } catch (error) {
+      console.error('Fejl ved log ud:', error);
+    }
+  };
 
+//   // Hvis der af en eller anden grund ikke skulle være muligt at finde den aktive bruger,
+//   // skal der udprintes en besked om dette igennem en tekstkomponent
+//   if (!auth.currentUser) {
+//     return (
+//       <View style={styles.container}>
+//         <Text>Bruger ikke fundet</Text>
+//       </View>
+//     );
+//   }
+
+  // I return() vises brugerens oplysninger og knapper til opdatering, Vilkår og log ud
   return (
-    <ScrollView style={styles.container}>
-      {mySlots.map((slot) => (
-        <View key={slot.key} style={styles.slotItem}>
-          <Text style={styles.text}>Tidspunkt: {slot.date}</Text>
-          <Text style={styles.text}>Behandlingstype: {slot.treatmentType}</Text>
-          <Text style={styles.text}>Pris: {slot.discountedPrice}</Text>
-        </View>
-      ))}
-    </ScrollView>
+    <View style={styles.container}>
+      <Text style={styles.header}>Min Profil</Text>
+      <Text>Bruger: {user.email}</Text>
+      <TouchableOpacity style={styles.button} onPress={handleUpdateProfile}>
+        <Text style={styles.buttonText}>Rediger Oplysninger</Text>
+      </TouchableOpacity>
+     
+      <TouchableOpacity style={styles.button} onPress={handleLogOut}>
+        <Text style={styles.buttonText}>Log Ud</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button}>
+        {/* Tilføj navigation til vilkårene her */}
+        <Text style={styles.buttonText}>Læs Vilkår</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#ecf0f1',
+    padding: 16,
   },
-  slotItem: {
-    margin: 10,
-    padding: 10,
-    backgroundColor: '#f8f8f8',
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+  header: {
+    fontSize: 24,
+    marginBottom: 16,
   },
-  text: {
+  button: {
+    backgroundColor: '#FFCBF1',
+    padding: 12,
+    marginVertical: 8,
+    borderRadius: 5,
+    width: '80%',
+  },
+  buttonText: {
     fontSize: 16,
-    marginBottom: 5,
+    color: 'black',
+    textAlign: 'center',
   },
 });
 
-export default MySlots;
+export default ProfileScreen;
