@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Button, TextInput, StyleSheet, ScrollView } from 'react-native'; // Notice ScrollView is added here
-import { getDatabase, ref, push } from "firebase/database";
+import { getDatabase, ref, push} from "firebase/database";
 import { Picker } from '@react-native-picker/picker';
 
 
